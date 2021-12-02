@@ -15,11 +15,7 @@ public class HashTable {
 	}
 	
 	ListNode table[];
-	
-	public HashTable(int size) {
-		// TODO Auto-generated constructor stub
-		table = new ListNode[size];
-	}
+	int size;
 	
 	public int hash(String key) {
 		return Math.abs(key.hashCode()) % table.length;
@@ -56,13 +52,15 @@ public class HashTable {
 		System.out.println(" \n ----Display----");
 		for (ListNode currentNode : table) {
 			if(currentNode == null)
-				System.out.println(" null");
+				System.out.println(" [NULL]");
 			else
-				System.out.println(currentNode.key + ": " + currentNode.count);
+				System.out.println(" " + currentNode.key + ": " + currentNode.count);
 		}
 	}
 	
 	public void countWords(String str) {
+		this.size = str.split(" ").length;
+		table = new ListNode[size];
 		for( String word : str.split(" ")) {
 			System.out.println(" word: " + word);
 			put(word.toLowerCase());
