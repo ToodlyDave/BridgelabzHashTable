@@ -7,9 +7,8 @@ public class HashTest {
 
 		String str = "To be or not to be";
 		
-		HashTableLinkedList hash = new HashTableLinkedList(5);
+		HashTable hash = new HashTable(6);
 		hash.countWords(str);
-//		hash.display();
 		
 	}
 

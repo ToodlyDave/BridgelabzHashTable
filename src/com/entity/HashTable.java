@@ -1,62 +1,73 @@
 package com.entity;
 
 public class HashTable {
-
-	private static class ArrayNode {
-		Object value;
-		ArrayNode next;
+	
+	private static class ListNode {
+		int count;
+		String key;
+		ListNode next;
+		
+		public ListNode(String key) {
+			// TODO Auto-generated constructor stub
+			this.key = key;
+			this.count = 1;
+		}
 	}
 	
-	ArrayNode[] table;
+	ListNode table[];
 	
-	int count;
-	
-	public HashTable(int initialSize) {
+	public HashTable(int size) {
 		// TODO Auto-generated constructor stub
-		table = new ArrayNode[initialSize];
+		table = new ListNode[size];
 	}
 	
-	public void put(Object value) {
-		
-		int bucket = hash(value);
-		ArrayNode arrayNode = table[bucket];
-		System.out.println(" inserting \"" + value + "\" at " + bucket);
-		if (arrayNode != null) {
-			while(arrayNode.next != null) {
-				arrayNode = arrayNode.next;
-			}
-			ArrayNode node = new ArrayNode();
-			node.value = value;
-			arrayNode.next = node;
-		}
-		else {
-			arrayNode = new ArrayNode();
-			arrayNode.value = value;
-			arrayNode.next = null;
-			table[bucket] = arrayNode;
-		}
-		
-		display();
-			
-	}
-	
-	public int hash(Object key) {	
-		System.out.println(" the hash: " + key.hashCode() + " " + key.hashCode() % table.length);
+	public int hash(String key) {
 		return Math.abs(key.hashCode()) % table.length;
 	}
 	
-	public void display() {
-		for (ArrayNode arrayNode : table) {
-			if(arrayNode == null)
-				System.out.println(" null");
-			else {
-				while(arrayNode != null) {
-					System.out.print(" " + arrayNode.value);
-					arrayNode = arrayNode.next;
-				}
-				System.out.println();
-			}
+	public void insert(String key, int bucket) {
+		table[bucket] = new ListNode(key);
+	}
+	
+	public void put(String key) {
+		int bucket = hash(key);
+		
+		if (table[bucket] == null) {
+			ListNode newNode = new ListNode(key);
+			table[bucket] = newNode;			
 		}
-		System.out.println();
+		else {
+			while(!table[bucket].key.equals(key)) {
+				System.out.println("\n Searching for an empty or equal position for " + key);
+				bucket = ++bucket % table.length;
+				if (table[bucket] == null) {
+					System.out.println(" Found an empty position at " + bucket);
+					table[bucket] = new ListNode(key);
+					return;
+				}
+			}
+			System.out.println(" Found the word and incrementing count ");
+			table[bucket].count++;
+			
+		}
+	}
+	
+	public void display() {
+		System.out.println(" \n ----Display----");
+		for (ListNode currentNode : table) {
+			if(currentNode == null)
+				System.out.println(" null");
+			else
+				System.out.println(currentNode.key + ": " + currentNode.count);
+		}
+	}
+	
+	public void countWords(String str) {
+		for( String word : str.split(" ")) {
+			System.out.println(" word: " + word);
+			put(word.toLowerCase());
+		}
+		display();
 	}
 }
+	
