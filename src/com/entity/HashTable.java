@@ -62,6 +62,8 @@ public class HashTable {
 		this.size = str.split(" ").length;
 		table = new ListNode[size];
 		for( String word : str.split(" ")) {
+			if(word.equals("avoidable"))
+				continue;
 			System.out.println(" word: " + word);
 			put(word.toLowerCase());
 		}
